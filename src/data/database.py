@@ -1,12 +1,12 @@
-import asyncio
-
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, session, DeclarativeBase, Session
 
 from src.data.config import settings
 
+
 class Base(DeclarativeBase):
     pass
+
 
 def create_session_maker():
     db_uri = settings.DATABASE_URL

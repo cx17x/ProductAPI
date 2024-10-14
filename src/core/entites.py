@@ -8,11 +8,10 @@ class Category(Enum):
     BREAD = 'bread'
     FRUIT = 'fruit'
 
+
 @dataclasses.dataclass
 class Product:
     name: str
     price: int
     category: Category
     id: Optional[int] = None
-
-

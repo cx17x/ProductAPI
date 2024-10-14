@@ -13,8 +13,8 @@ class Settings(BaseSettings):
         # DSN
         return f"postgresql+psycopg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
-    model_config = SettingsConfigDict(env_file=r"D:\pythonProject\src\data\.env")
+    model_config = SettingsConfigDict(env_file=r"/Users/nikiktakovalev/PycharmProjects/ProductAPI/src/.env")
 
 
 settings = Settings()
-# print(settings.DATABASE_URL)
+print(settings.DATABASE_URL)
