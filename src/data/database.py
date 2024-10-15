@@ -1,11 +1,10 @@
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker, session, DeclarativeBase, Session
+from sqlalchemy.orm import sessionmaker, session, DeclarativeBase, Session, declarative_base
 
 from src.data.config import settings
 
 
-class Base(DeclarativeBase):
-    pass
+Base = declarative_base()
 
 
 def create_session_maker():

@@ -3,7 +3,7 @@ import dataclasses
 from src.core.entites import Product, Category
 from src.core.usecase import IUseCase
 from src.core.repo.i_proudct_repo import IProductsRepo
-from src.core.usecases.create_prod import ProductService
+from src.core.usecases.product.create_prod import ProductService
 
 
 @dataclasses.dataclass

@@ -13,5 +13,5 @@ class Category(Enum):
 class Product:
     name: str
     price: int
-    category: Category
+    category_id: int
     id: Optional[int] = None
