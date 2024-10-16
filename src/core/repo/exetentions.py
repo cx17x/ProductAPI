@@ -8,3 +8,7 @@ class NotFound(ProductException):
 
 class Dublicate(ProductException):
     pass
+
+
+class AddingError(ProductException):
+    pass

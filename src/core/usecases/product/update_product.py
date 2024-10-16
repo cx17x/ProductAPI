@@ -1,9 +1,10 @@
 import dataclasses
 
+from src.core.UnitOfWork import UnitOfWork
 from src.core.entites import Product, Category
 from src.core.usecase import IUseCase
 from src.core.repo.i_proudct_repo import IProductsRepo
-from src.core.usecases.product.create_prod import ProductService
+from src.core.usecases.product.product_service import ProductService
 
 
 @dataclasses.dataclass
@@ -15,9 +16,10 @@ class UpdateProductDTO:
 
 
 class UpdateProductUC(IUseCase):
-    def __int__(self, product_repo: IProductsRepo, service: ProductService):
+    def __init__(self, product_repo: IProductsRepo, service: ProductService, uow: UnitOfWork):
         self.product_repo = product_repo
         self.service = service
+        self.uow = uow
 
     def execute(self, dto: UpdateProductDTO) -> Product:
         curr_product = self.product_repo.get_product(dto.product_id)
@@ -31,5 +33,5 @@ class UpdateProductUC(IUseCase):
         )
 
         updated_product = self.product_repo.update_product(updated_product)
-
+        self.uow.commit()
         return updated_product

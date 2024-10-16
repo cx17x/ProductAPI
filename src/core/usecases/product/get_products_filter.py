@@ -14,13 +14,13 @@ class GetProductsFilterDTO:
 
 
 class GetProductsFilterUC(IUseCase):
-    def __int__(self, product_repo: IProductsRepo):
+    def __init__(self, product_repo: IProductsRepo):
         self.product_repo = product_repo
 
 
-def execute(self, dto: GetProductsFilterDTO) -> List[Product]:
-    return self.product_repo.get_product_filter(
-        category=dto.category,
-        min_price=dto.min_price,
-        max_price=dto.max_price
-    )
+    def execute(self, dto: GetProductsFilterDTO) -> List[Product]:
+        return self.product_repo.get_product_filter(
+            category=dto.category,
+            min_price=dto.min_price,
+            max_price=dto.max_price
+        )

@@ -1,3 +1,5 @@
+from typing import Generator
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, session, DeclarativeBase, Session, declarative_base
 
@@ -20,7 +22,7 @@ def create_session_maker():
     return sessionmaker(engine, autoflush=False, expire_on_commit=False)
 
 
-def new_session() -> Session:
+def new_session() -> Generator[Session, None, None]:
     session_maker = create_session_maker()
     with session_maker() as session:
-        return session
+        yield session
