@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -13,11 +13,11 @@ from src.core.usecases.product.update_product import UpdateProductUC, UpdateProd
 from src.data.database import new_session
 from src.data.repo.sqlA_product_repo import ProductRepoBD
 
-router = APIRouter()
+product_router = APIRouter()
 
 
-@router.get('/{product_id}')
-def get_product(product_id: int, db: Depends(new_session)) -> ProductResponse:
+@product_router.get('/{product_id}')
+def get_product(product_id: int, db: Session = Depends(new_session)) -> ProductResponse:
     product_repo = ProductRepoBD(db)
     usecase = GetProductUC(product_repo=product_repo)
     dto = GetProductDTO(product_id=product_id)
@@ -30,8 +30,8 @@ def get_product(product_id: int, db: Depends(new_session)) -> ProductResponse:
     )
 
 
-@router.post('/')
-def add_product(product: ProductBase, db: Depends(new_session)) -> ProductResponse:
+@product_router.post('/')
+def add_product(product: ProductBase, db: Session = Depends(new_session)) -> ProductResponse:
     product_repo = ProductRepoBD(db)
     usecase = AddNewProductUC(product_repo=product_repo, service=ProductService(), uow=db)
     dto = AddProductDTO(
@@ -48,8 +48,8 @@ def add_product(product: ProductBase, db: Depends(new_session)) -> ProductRespon
     )
 
 
-@router.put('/{product_id}')
-def update_product(product_id: int, product: ProductBase, db: Depends(new_session)) -> ProductResponse:
+@product_router.put('/{product_id}')
+def update_product(product_id: int, product: ProductBase,db: Session = Depends(new_session)) -> ProductResponse:
     product_repo = ProductRepoBD(db)
     usecase = UpdateProductUC(product_repo=product_repo, service=ProductService(), uow=db)
 
@@ -68,7 +68,7 @@ def update_product(product_id: int, product: ProductBase, db: Depends(new_sessio
     )
 
 
-@router.post('/filter')
+@product_router.post('/filter')
 def get_product_filter(filter_params: ProductFilterParams, db: Session = Depends(new_session)) -> List[ProductResponse]:
     usecase = GetProductsFilterUC(product_repo=ProductRepoBD(db))
     dto = GetProductsFilterDTO(
@@ -89,8 +89,8 @@ def get_product_filter(filter_params: ProductFilterParams, db: Session = Depends
     return products_response
 
 
-@router.delete('/{product_id}')
-def delete_product(product_id: int, db: Depends(new_session)) -> None:
+@product_router.delete('/{product_id}')
+def delete_product(product_id: int, db: Session = Depends(new_session)) -> None:
     usecase = DeleteProductUC(product_repo=ProductRepoBD(db), uow=db)
     dto = DeleteProductDTO(
         product_id=product_id

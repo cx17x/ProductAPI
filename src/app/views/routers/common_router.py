@@ -2,14 +2,14 @@ from fastapi import APIRouter
 
 from src.app.views.routers import category, product
 
-router = APIRouter()
+main_router = APIRouter()
 
-router.include_router(
-    category.router,
-    prefix='categoires'
+main_router.include_router(
+    category.category_router,
+    prefix='/categoires'
 )
 
-router.include_router(
-    product.router,
-    prefix='products'
+main_router.include_router(
+    product.product_router,
+    prefix='/products'
 )
