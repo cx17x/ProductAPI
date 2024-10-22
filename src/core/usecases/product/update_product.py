@@ -32,6 +32,6 @@ class UpdateProductUC(IUseCase):
 
         )
 
-        updated_product = self.product_repo.update_product(updated_product)
+        updated_product = self.product_repo.update_product(product=updated_product, product_id=dto.product_id)
         self.uow.commit()
         return updated_product

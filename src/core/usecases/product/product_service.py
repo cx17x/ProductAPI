@@ -2,12 +2,12 @@ from src.core.entites import Product, Category
 
 
 class ProductService:
-    def create_product(self, name: str, price: int, category: Category) -> Product:
+    def create_product(self, name: str, price: int, category_id: int) -> Product:
         product = Product(
             name=name,
             price=price,
             id=None,
-            category=category
+            category_id=category_id
         )
 
         return product

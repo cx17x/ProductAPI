@@ -11,7 +11,7 @@ from src.core.usecases.product.product_service import ProductService
 class AddProductDTO:
     name: str
     price: int
-    сategory: Category
+    category_id: int
 
 
 class AddNewProductUC(IUseCase):
@@ -21,7 +21,7 @@ class AddNewProductUC(IUseCase):
         self.uow = uow
 
     def execute(self, dto: AddProductDTO) -> Product:
-        new_product = self.service.create_product(name=dto.name, price=dto.price)
+        new_product = self.service.create_product(name=dto.name, price=dto.price, category_id=dto.category_id)
         new_product = self.product_repo.add_product(new_product)
         self.uow.commit()
         return new_product

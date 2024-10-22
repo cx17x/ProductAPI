@@ -8,11 +8,13 @@ from src.core.entites import Category
 class ProductBase(BaseModel):
     name: str
     price: int
-    category: Category
+    category_id: int
 
 
-class ProductCreate(ProductBase):
-    pass
+class ProductCreate(BaseModel):
+    name: str
+    price: int
+    category_id: int
 
 
 class ProductFilterParams(BaseModel):
@@ -21,7 +23,7 @@ class ProductFilterParams(BaseModel):
     max_price: Optional[int] = None
 
 
-class ProductResponse(ProductBase):
+class ProductResponse(BaseModel):
     name: str
     price: int
     category_id: int

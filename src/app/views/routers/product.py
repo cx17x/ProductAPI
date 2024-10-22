@@ -1,9 +1,10 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from src.app.views.routers.schemas import ProductBase, ProductResponse, ProductFilterParams
+from src.app.views.routers.schemas import ProductBase, ProductResponse, ProductFilterParams, ProductCreate
+from src.core.repo.exetentions import NotFound
 from src.core.usecases.product.add_product import AddNewProductUC, AddProductDTO
 from src.core.usecases.product.delete_product import DeleteProductUC, DeleteProductDTO
 from src.core.usecases.product.get_product import GetProductUC, GetProductDTO
@@ -21,7 +22,11 @@ def get_product(product_id: int, db: Session = Depends(new_session)) -> ProductR
     product_repo = ProductRepoBD(db)
     usecase = GetProductUC(product_repo=product_repo)
     dto = GetProductDTO(product_id=product_id)
-    result = usecase.execute(dto=dto)
+    try:
+        result = usecase.execute(dto=dto)
+    except NotFound:
+        raise HTTPException(status_code=404, detail="Product not found")
+
     return ProductResponse(
         name=result.name,
         price=result.price,
@@ -29,17 +34,17 @@ def get_product(product_id: int, db: Session = Depends(new_session)) -> ProductR
         id=result.id
     )
 
-
 @product_router.post('/')
-def add_product(product: ProductBase, db: Session = Depends(new_session)) -> ProductResponse:
+def add_product(product: ProductCreate, db: Session = Depends(new_session)) -> ProductResponse:
     product_repo = ProductRepoBD(db)
     usecase = AddNewProductUC(product_repo=product_repo, service=ProductService(), uow=db)
     dto = AddProductDTO(
         name=product.name,
         price=product.price,
-        сategory=product.category
+        category_id=product.category_id
     )
     result = usecase.execute(dto=dto)
+    print(result)
     return ProductResponse(
         name=result.name,
         price=result.price,

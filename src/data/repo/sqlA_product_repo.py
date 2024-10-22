@@ -15,6 +15,7 @@ class ProductRepoBD(IProductsRepo):
         self.db = db_session
 
     def _model_to_entity(self, product: ProductModel):
+        print(product)
         return Product(
             id=product.id,
             name=product.name,
@@ -33,14 +34,14 @@ class ProductRepoBD(IProductsRepo):
     def add_product(self, product: Product) -> Product:
         product_model = self._entyty_to_model(product)
         self.db.add(product_model)
-
+        self.db.flush()
         return self._model_to_entity(product_model)
 
-    def get_product(self, product_id: int) -> Optional[Product]:
-        product_model = self.db.query(ProductModel).filter_by(id=product_id).first()
-        if product_model:
+    def get_product(self, product_id: int) -> Product:
+        product_model = self.db.query(ProductModel).get(product_id)
+        if product_model is not None:
             return self._model_to_entity(product_model)
-        return NotFound
+        raise NotFound
 
     def delete_product(self, product_id: int) -> None:
         product_model = self.db.query(ProductModel).filter_by(id=product_id).first()
@@ -48,13 +49,16 @@ class ProductRepoBD(IProductsRepo):
             self.db.delete(product_model)
 
     def update_product(self, product: Product, product_id: int) -> Optional[Product]:
-        product_model = self.db.query(ProductModel).filter_by(id=product_id).first()
+        product_model = self.db.query(ProductModel).get(product_id)
         if product_model:
             product_model.name = product.name
             product_model.price = product.price
-            product_model.category_id = self.db.query(CategoryModel).filter_by(name=product.category_id).id
+            product_model.category_id = product.category_id
+            self.db.add(product_model)
 
-        return AddingError
+            return self._model_to_entity(product_model)
+
+        raise NotFound
 
     def get_product_filter(
             self,

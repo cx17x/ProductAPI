@@ -34,7 +34,7 @@ def get_categories(db: Session = Depends(new_session)) -> List[CategoryResponse]
     category_response = [
         CategoryResponse(
             id=product.id,
-            name=Category(product.name)
+            name=product.name
         ) for product in result
     ]
     return category_response

@@ -10,6 +10,12 @@ class Category(Enum):
 
 
 @dataclasses.dataclass
+class CategoryType:
+    name: Category
+    id: Optional[int] = None
+
+
+@dataclasses.dataclass
 class Product:
     name: str
     price: int
